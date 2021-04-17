@@ -9,6 +9,10 @@ const userRoutes = require('./app/routes/user_routes')
 const postRoutes = require('./app/routes/post_routes')
 const commentRoutes = require('./app/routes/comment_routes')
 const nyPostRoutes = require('./app/routes/nypost_routes')
+const dcPostRoutes = require('./app/routes/dcpost_routes')
+const sePostRoutes = require('./app/routes/sepost_routes')
+const laPostRoutes = require('./app/routes/lapost_routes')
+
 // require middleware
 const errorHandler = require('./lib/error_handler')
 const requestLogger = require('./lib/request_logger')
@@ -63,6 +67,9 @@ app.use(userRoutes)
 app.use(postRoutes)
 app.use(commentRoutes)
 app.use(nyPostRoutes)
+app.use(sePostRoutes)
+app.use(dcPostRoutes)
+app.use(laPostRoutes)
 
 // register error handling middleware
 // note that this comes after the route middlewares, because it needs to be
