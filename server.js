@@ -12,6 +12,8 @@ const nyPostRoutes = require('./app/routes/nypost_routes')
 const dcPostRoutes = require('./app/routes/dcpost_routes')
 const sePostRoutes = require('./app/routes/sepost_routes')
 const laPostRoutes = require('./app/routes/lapost_routes')
+const parPostRoutes = require('./app/routes/parpost_routes')
+const tyoPostRoutes = require('./app/routes/tyopost_routes')
 
 // require middleware
 const errorHandler = require('./lib/error_handler')
@@ -70,6 +72,8 @@ app.use(nyPostRoutes)
 app.use(sePostRoutes)
 app.use(dcPostRoutes)
 app.use(laPostRoutes)
+app.use(parPostRoutes)
+app.use(tyoPostRoutes)
 
 // register error handling middleware
 // note that this comes after the route middlewares, because it needs to be
