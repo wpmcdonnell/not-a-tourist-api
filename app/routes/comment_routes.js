@@ -5,6 +5,7 @@ const passport = require('passport')
 
 // pull in Mongoose model for comments
 const Comment = require('../models/comment')
+const User = require('../models/user')
 
 // this is a collection of methods that help us detect situations when we need
 // to throw a custom error
@@ -30,17 +31,22 @@ const router = express.Router()
 // INDEX
 // GET /comments
 router.get('/comments', requireToken, (req, res, next) => {
+  // find all pictures where the privacy of the owner is false
+  // if the owner is getting the pictures, show them their pictures as well
   Comment.find()
+    .then(handle404)
     .then(comments => {
-      // `comments` will be an array of Mongoose documents
-      // we want to convert each one to a POJO, so we use `.map` to
-      // apply `.toObject` to each one
-      return comments.map(comment => comment.toObject())
-    })
-    // respond with status 200 and JSON of the comments
-    .then(comments => res.status(200).json({ comments: comments }))
-    // if an error occurs, pass it to the handler
-    .catch(next)
+      comments = comments.map(picture => picture.toObject())
+      return Promise.all(comments.map(comment => {
+        return User.findById(comment.owner).then(owner => {
+          console.log(owner._id.toString(), req.user.id.toString())
+          comment.ownerName = owner.username
+          return comment
+        })
+      }))
+    }).then(comments => {
+      res.status(200).json({ comments })
+    }).catch(next)
 })
 
 // SHOW
