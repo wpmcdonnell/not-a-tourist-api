@@ -36,10 +36,9 @@ router.get('/comments', requireToken, (req, res, next) => {
   Comment.find()
     .then(handle404)
     .then(comments => {
-      comments = comments.map(picture => picture.toObject())
+      comments = comments.map(comment => comment.toObject())
       return Promise.all(comments.map(comment => {
         return User.findById(comment.owner).then(owner => {
-          console.log(owner._id.toString(), req.user.id.toString())
           comment.ownerName = owner.username
           return comment
         })

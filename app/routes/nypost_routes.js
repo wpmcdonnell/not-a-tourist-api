@@ -5,6 +5,7 @@ const passport = require('passport')
 
 // pull in Mongoose model for posts
 const Nypost = require('../models/nypost')
+const User = require('../models/user')
 
 // this is a collection of methods that help us detect situations when we need
 // to throw a custom error
@@ -49,12 +50,18 @@ router.get('/ny-posts/:id', requireToken, (req, res, next) => {
   // req.params.id will be set based on the `:id` in the route
   Nypost.findById(req.params.id)
     .then(handle404)
-    // if `findById` is succesful, respond with 200 and "post" JSON
-    .then(post => res.status(200).json({ post: post.toObject() }))
-    // if an error occurs, pass it to the handler
+    .then(post => post.toObject())
+    .then(post => User.findById(post.owner)
+      .then(owner => {
+        post.ownerName = owner.username
+        return post
+      })
+      .then(post => {
+        res.status(200).json({ post: post })
+      })
+    )
     .catch(next)
 })
-
 // CREATE
 // POST /posts
 router.post('/ny-posts', requireToken, (req, res, next) => {
