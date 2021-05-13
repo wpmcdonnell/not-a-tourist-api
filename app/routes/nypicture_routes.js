@@ -102,7 +102,6 @@ router.get('/ny-posts-pictures', (req, res, next) => {
 //     }).catch(next)
 // })
 
-
 // // SHOW aka get by id
 router.get('/ny-posts-pictures/:id', (req, res, next) => {
   Picture.findById(req.params.id)
