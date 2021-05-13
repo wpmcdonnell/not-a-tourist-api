@@ -18,9 +18,13 @@ const pictureSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
+  city: {
+    type: String,
+    required: false
+  },
   postOwner: {
     type: String,
-    required: true
+    required: false
   }
 }, {
   timestamps: true

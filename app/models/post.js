@@ -5,6 +5,10 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  url: {
+    type: String,
+    required: false
+  },
   list: {
     type: String,
     required: true
