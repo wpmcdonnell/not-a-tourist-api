@@ -5,9 +5,13 @@ const nyPostSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  url: {
+    type: String,
+    required: false
+  },
   list: {
     type: String,
-    required: true
+    required: false
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,

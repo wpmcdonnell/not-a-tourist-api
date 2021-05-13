@@ -5,11 +5,11 @@ const pictureSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  caption: {
+  title: {
     type: String,
     required: false
   },
-  tag: {
+  list: {
     type: String,
     required: false
   },
@@ -17,14 +17,6 @@ const pictureSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
-  },
-  city: {
-    type: String,
-    required: false
-  },
-  postOwner: {
-    type: String,
-    required: false
   }
 }, {
   timestamps: true

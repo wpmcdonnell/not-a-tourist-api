@@ -15,7 +15,7 @@ const router = express.Router()
 const s3Upload = require('../../lib/s3_upload')
 const removeBlanks = require('../../lib/remove_blank_fields')
 
-router.post('/pictures', requireToken, upload.single('picture'), (req, res, next) => {
+router.post('/ny-posts-pictures', requireToken, upload.single('picture'), (req, res, next) => {
   console.log(req)
   req.file.owner = req.user._id
   console.log(req.file, "this is my file in the router post", req.body, "the body", req.data, "the data")
@@ -23,19 +23,19 @@ router.post('/pictures', requireToken, upload.single('picture'), (req, res, next
   s3Upload(req.file)
     .then(awsFile => {
       console.log(awsFile)
-      return Picture.create({ url: awsFile.Location, owner: req.user._id, caption: req.body.caption, tag: req.body.tag })
+      return Picture.create({ url: awsFile.Location, owner: req.user._id, title: req.body.title, list: req.body.list })
     })
   //  req.body => { upload: { url: 'www.blank.com' } }
     .then(pictureDoc => {
       res.status(201).json({ picture: pictureDoc })
-      console.log(pictureDoc)
+      console.log('This is picdoc', pictureDoc)
     })
     .catch(next)
 })
 
 // this would just get picture data
 // INDEX aka GET all
-router.get('/pictures', requireToken, (req, res, next) => {
+router.get('/ny-posts-pictures', requireToken, (req, res, next) => {
   // find all pictures where the privacy of the owner is false
   // if the owner is getting the pictures, show them their pictures as well
   console.log(req.user, "my user")
@@ -60,7 +60,7 @@ router.get('/pictures', requireToken, (req, res, next) => {
     }).catch(next)
 })
 
-router.get('/gallery', (req, res, next) => {
+router.get('/ny-posts-pictures', (req, res, next) => {
   // find all pictures where the privacy of the owner is false
   // if the owner is getting the pictures, show them their pictures as well
   Picture.find()
@@ -104,7 +104,7 @@ router.get('/gallery', (req, res, next) => {
 
 
 // // SHOW aka get by id
-router.get('/pictures/:id', (req, res, next) => {
+router.get('/ny-posts-pictures/:id', (req, res, next) => {
   Picture.findById(req.params.id)
     .then(handle404)
     .then(picture => picture.toObject())
@@ -121,7 +121,7 @@ router.get('/pictures/:id', (req, res, next) => {
 })
 
 // // UPDATE picture caption
-router.patch('/pictures/:id', requireToken, removeBlanks, (req, res, next) => {
+router.patch('/ny-posts-pictures/:id', requireToken, removeBlanks, (req, res, next) => {
   delete req.body.picture.owner
   Picture.findById(req.params.id)
     .then(handle404)
@@ -133,7 +133,7 @@ router.patch('/pictures/:id', requireToken, removeBlanks, (req, res, next) => {
     .catch(next)
 })
 // DELETE
-router.delete('/pictures/:id', requireToken, (req, res, next) => {
+router.delete('/ny-posts-pictures/:id', requireToken, (req, res, next) => {
   Picture.findById(req.params.id)
     .then(handle404)
     .then(picture => {
