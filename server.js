@@ -15,6 +15,8 @@ const laPostRoutes = require('./app/routes/lapost_routes')
 const parPostRoutes = require('./app/routes/parpost_routes')
 const tyoPostRoutes = require('./app/routes/tyopost_routes')
 const nyPictureRoutes = require('./app/routes/nypicture_routes')
+const sePictureRoutes = require('./app/routes/sepicture_routes')
+const laPictureRoutes = require('./app/routes/lapicture_routes')
 
 // require middleware
 const errorHandler = require('./lib/error_handler')
@@ -76,6 +78,8 @@ app.use(laPostRoutes)
 app.use(parPostRoutes)
 app.use(tyoPostRoutes)
 app.use(nyPictureRoutes)
+app.use(sePictureRoutes)
+app.use(laPictureRoutes)
 
 // register error handling middleware
 // note that this comes after the route middlewares, because it needs to be
