@@ -16,13 +16,11 @@ const s3Upload = require('../../lib/s3_upload')
 const removeBlanks = require('../../lib/remove_blank_fields')
 
 router.post('/ny-posts', requireToken, upload.single('picture'), (req, res, next) => {
-  req.file.owner = req.user._id
-  console.log(req.file, 'this is my file in the router post', req.body, 'the body', req.data, 'the data')
+  console.log('this is my req.user', req.file)
 
   s3Upload(req.file)
     .then(awsFile => {
-      console.log(awsFile)
-      return Picture.create({ url: awsFile.Location, owner: req.user._id, title: req.body.title, list: req.body.list })
+      return Picture.create({ url: awsFile.Location, owner: req.user.id, title: req.body.title, list: req.body.list })
     })
   //  req.body => { upload: { url: 'www.blank.com' } }
     .then(pictureDoc => {
