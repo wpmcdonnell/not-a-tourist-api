@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
 
 const nyPostSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true
-  },
   url: {
     type: String,
     required: false
+  },
+  title: {
+    type: String,
+    required: true
   },
   list: {
     type: String,

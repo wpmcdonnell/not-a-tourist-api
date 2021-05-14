@@ -15,10 +15,9 @@ const router = express.Router()
 const s3Upload = require('../../lib/s3_upload')
 const removeBlanks = require('../../lib/remove_blank_fields')
 
-router.post('/ny-posts-pictures', requireToken, upload.single('picture'), (req, res, next) => {
-  console.log(req)
+router.post('/ny-posts', requireToken, upload.single('picture'), (req, res, next) => {
   req.file.owner = req.user._id
-  console.log(req.file, "this is my file in the router post", req.body, "the body", req.data, "the data")
+  console.log(req.file, 'this is my file in the router post', req.body, 'the body', req.data, 'the data')
 
   s3Upload(req.file)
     .then(awsFile => {

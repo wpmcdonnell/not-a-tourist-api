@@ -64,20 +64,20 @@ router.get('/ny-posts/:id', requireToken, (req, res, next) => {
 })
 // CREATE
 // POST /posts
-router.post('/ny-posts', requireToken, (req, res, next) => {
-  // set owner of new post to be current user
-  req.body.post.owner = req.user.id
-
-  Nypost.create(req.body.post)
-    // respond to succesful `create` with status 201 and JSON of new "post"
-    .then(post => {
-      res.status(201).json({ post: post.toObject() })
-    })
-    // if an error occurs, pass it off to our error handler
-    // the error handler needs the error message and the `res` object so that it
-    // can send an error message back to the client
-    .catch(next)
-})
+// router.post('/ny-posts', requireToken, (req, res, next) => {
+//   // set owner of new post to be current user
+//   req.body.post.owner = req.user.id
+//
+//   Nypost.create(req.body.post)
+//     // respond to succesful `create` with status 201 and JSON of new "post"
+//     .then(post => {
+//       res.status(201).json({ post: post.toObject() })
+//     })
+//     // if an error occurs, pass it off to our error handler
+//     // the error handler needs the error message and the `res` object so that it
+//     // can send an error message back to the client
+//     .catch(next)
+// })
 
 // UPDATE
 // PATCH /posts/5a7db6c74d55bc51bdf39793
