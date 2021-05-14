@@ -3,7 +3,7 @@ const passport = require('passport')
 const multer = require('multer')
 const storage = multer.memoryStorage()
 const upload = multer({ storage })
-const Picture = require('../models/picture')
+const SePicture = require('../models/sepicture')
 const User = require('../models/user')
 
 const requireToken = passport.authenticate('bearer', { session: false })
@@ -20,7 +20,7 @@ router.post('/se-posts-pictures', requireToken, upload.single('picture'), (req, 
   console.log('this is my req.user when text', req.user)
   s3Upload(req.file)
     .then(awsFile => {
-      return Picture.create({ url: awsFile.Location, owner: req.user.id, title: req.body.title, list: req.body.list })
+      return SePicture.create({ url: awsFile.Location, owner: req.user.id, title: req.body.title, list: req.body.list })
     })
   //  req.body => { upload: { url: 'www.blank.com' } }
     .then(pictureDoc => {
@@ -36,7 +36,7 @@ router.get('/se-posts-pictures', requireToken, (req, res, next) => {
   // find all pictures where the privacy of the owner is false
   // if the owner is getting the pictures, show them their pictures as well
   console.log(req.user, "my user")
-  Picture.find()
+  SePicture.find()
     .then(handle404)
     .then(pictures => {
       pictures = pictures.map(picture => picture.toObject())
@@ -60,7 +60,7 @@ router.get('/se-posts-pictures', requireToken, (req, res, next) => {
 router.get('/se-posts-pictures', (req, res, next) => {
   // find all pictures where the privacy of the owner is false
   // if the owner is getting the pictures, show them their pictures as well
-  Picture.find()
+  SePicture.find()
     .then(handle404)
     .then(pictures => {
       pictures = pictures.map(picture => picture.toObject())
@@ -84,7 +84,7 @@ router.get('/se-posts-pictures', (req, res, next) => {
 //
 // INDEX aka GET all
 // router.get('/home', requireToken, (req, res, next) => {
-//   Picture.find({ owner: req.user.id })
+//   SePicture.find({ owner: req.user.id })
 //     .then(handle404)
 //     .then(pictures => {
 //       pictures = pictures.map(picture => picture.toObject())
@@ -101,7 +101,7 @@ router.get('/se-posts-pictures', (req, res, next) => {
 
 // // SHOW aka get by id
 router.get('/se-posts-pictures/:id', (req, res, next) => {
-  Picture.findById(req.params.id)
+  SePicture.findById(req.params.id)
     .then(handle404)
     .then(picture => picture.toObject())
     .then(picture => User.findById(picture.owner)
@@ -119,7 +119,7 @@ router.get('/se-posts-pictures/:id', (req, res, next) => {
 // // UPDATE picture caption
 router.patch('/se-posts-pictures/:id', requireToken, removeBlanks, (req, res, next) => {
   delete req.body.picture.owner
-  Picture.findById(req.params.id)
+  SePicture.findById(req.params.id)
     .then(handle404)
     .then(picture => {
       requireOwnership(req, picture)
@@ -130,12 +130,12 @@ router.patch('/se-posts-pictures/:id', requireToken, removeBlanks, (req, res, ne
 })
 // DELETE
 router.delete('/se-posts-pictures/:id', requireToken, (req, res, next) => {
-  Picture.findById(req.params.id)
+  SePicture.findById(req.params.id)
     .then(handle404)
     .then(picture => {
       requireOwnership(req, picture)
       picture.deleteOne()
-      Picture.deleteOne()
+      SePicture.deleteOne()
     })
     .then(() => res.sendStatus(204))
     .catch(next)

@@ -17,6 +17,7 @@ const tyoPostRoutes = require('./app/routes/tyopost_routes')
 const nyPictureRoutes = require('./app/routes/nypicture_routes')
 const sePictureRoutes = require('./app/routes/sepicture_routes')
 const laPictureRoutes = require('./app/routes/lapicture_routes')
+const dcPictureRoutes = require('./app/routes/dcpicture_routes')
 
 // require middleware
 const errorHandler = require('./lib/error_handler')
@@ -80,6 +81,7 @@ app.use(tyoPostRoutes)
 app.use(nyPictureRoutes)
 app.use(sePictureRoutes)
 app.use(laPictureRoutes)
+app.use(dcPictureRoutes)
 
 // register error handling middleware
 // note that this comes after the route middlewares, because it needs to be
