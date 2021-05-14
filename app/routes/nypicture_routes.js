@@ -15,24 +15,11 @@ const router = express.Router()
 const s3Upload = require('../../lib/s3_upload')
 const removeBlanks = require('../../lib/remove_blank_fields')
 
-router.post('/ny-posts', requireToken, upload.single('picture'), (req, res, next) => {
+router.post('/ny-posts-pictures', requireToken, upload.single('picture'), (req, res, next) => {
   console.log('this is my req.file when upload', req.file)
-
   console.log('this is my req.user when text', req.user)
-
-if (!req.file) {
-    Picture.create({ title: req.body.picture.title, list: req.body.picture.list, owner: req.user.id })
-    // respond to succesful `create` with status 201 and JSON of new "post"
-      .then(picture => {
-        res.status(201).json({ picture: picture.toObject() })
-      })
-    // if an error occurs, pass it off to our error handler
-    // the error handler needs the error message and the `res` object so that it
-    // can send an error message back to the client
-      .catch(next)
-} else {
-    s3Upload(req.file)
-      .then(awsFile => {
+  s3Upload(req.file)
+    .then(awsFile => {
       return Picture.create({ url: awsFile.Location, owner: req.user.id, title: req.body.title, list: req.body.list })
     })
   //  req.body => { upload: { url: 'www.blank.com' } }
@@ -41,8 +28,6 @@ if (!req.file) {
       console.log('This is picdoc', pictureDoc)
     })
     .catch(next)
-}
-
 })
 
 // this would just get picture data
