@@ -3,7 +3,7 @@ const passport = require('passport')
 const multer = require('multer')
 const storage = multer.memoryStorage()
 const upload = multer({ storage })
-const Picture = require('../models/picture')
+const Tyopicture = require('../models/tyopicture')
 const User = require('../models/user')
 
 const requireToken = passport.authenticate('bearer', { session: false })
@@ -20,7 +20,7 @@ router.post('/tokyo-posts-pictures', requireToken, upload.single('picture'), (re
   console.log('this is my req.user when text', req.user)
   s3Upload(req.file)
     .then(awsFile => {
-      return Picture.create({ url: awsFile.Location, owner: req.user.id, title: req.body.title, list: req.body.list })
+      return Tyopicture.create({ url: awsFile.Location, owner: req.user.id, title: req.body.title, list: req.body.list })
     })
   //  req.body => { upload: { url: 'www.blank.com' } }
     .then(pictureDoc => {
@@ -36,7 +36,7 @@ router.get('/tokyo-posts-pictures', requireToken, (req, res, next) => {
   // find all pictures where the privacy of the owner is false
   // if the owner is getting the pictures, show them their pictures as well
   console.log(req.user, "my user")
-  Picture.find()
+  Tyopicture.find()
     .then(handle404)
     .then(pictures => {
       pictures = pictures.map(picture => picture.toObject())
@@ -60,7 +60,7 @@ router.get('/tokyo-posts-pictures', requireToken, (req, res, next) => {
 router.get('/tokyo-posts-pictures', (req, res, next) => {
   // find all pictures where the privacy of the owner is false
   // if the owner is getting the pictures, show them their pictures as well
-  Picture.find()
+  Tyopicture.find()
     .then(handle404)
     .then(pictures => {
       pictures = pictures.map(picture => picture.toObject())
@@ -84,7 +84,7 @@ router.get('/tokyo-posts-pictures', (req, res, next) => {
 //
 // INDEX aka GET all
 // router.get('/home', requireToken, (req, res, next) => {
-//   Picture.find({ owner: req.user.id })
+//   Tyopicture.find({ owner: req.user.id })
 //     .then(handle404)
 //     .then(pictures => {
 //       pictures = pictures.map(picture => picture.toObject())
@@ -101,7 +101,7 @@ router.get('/tokyo-posts-pictures', (req, res, next) => {
 
 // // SHOW aka get by id
 router.get('/tokyo-posts-pictures/:id', (req, res, next) => {
-  Picture.findById(req.params.id)
+  Tyopicture.findById(req.params.id)
     .then(handle404)
     .then(picture => picture.toObject())
     .then(picture => User.findById(picture.owner)
@@ -119,7 +119,7 @@ router.get('/tokyo-posts-pictures/:id', (req, res, next) => {
 // // UPDATE picture caption
 router.patch('/tokyo-posts-pictures/:id', requireToken, removeBlanks, (req, res, next) => {
   delete req.body.picture.owner
-  Picture.findById(req.params.id)
+  Tyopicture.findById(req.params.id)
     .then(handle404)
     .then(picture => {
       requireOwnership(req, picture)
@@ -130,12 +130,12 @@ router.patch('/tokyo-posts-pictures/:id', requireToken, removeBlanks, (req, res,
 })
 // DELETE
 router.delete('/tokyo-posts-pictures/:id', requireToken, (req, res, next) => {
-  Picture.findById(req.params.id)
+  Tyopicture.findById(req.params.id)
     .then(handle404)
     .then(picture => {
       requireOwnership(req, picture)
       picture.deleteOne()
-      Picture.deleteOne()
+      Tyopicture.deleteOne()
     })
     .then(() => res.sendStatus(204))
     .catch(next)

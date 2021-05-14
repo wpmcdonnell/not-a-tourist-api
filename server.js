@@ -18,7 +18,8 @@ const nyPictureRoutes = require('./app/routes/nypicture_routes')
 const sePictureRoutes = require('./app/routes/sepicture_routes')
 const laPictureRoutes = require('./app/routes/lapicture_routes')
 const dcPictureRoutes = require('./app/routes/dcpicture_routes')
-
+const parPictureRoutes = require('./app/routes/parpicture_routes')
+const tyoPictureRoutes = require('./app/routes/tyopicture_routes')
 // require middleware
 const errorHandler = require('./lib/error_handler')
 const requestLogger = require('./lib/request_logger')
@@ -82,6 +83,8 @@ app.use(nyPictureRoutes)
 app.use(sePictureRoutes)
 app.use(laPictureRoutes)
 app.use(dcPictureRoutes)
+app.use(parPictureRoutes)
+app.use(tyoPictureRoutes)
 
 // register error handling middleware
 // note that this comes after the route middlewares, because it needs to be
