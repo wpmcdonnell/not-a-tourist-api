@@ -35,7 +35,7 @@ router.post('/ny-posts-pictures', requireToken, upload.single('picture'), (req, 
 router.get('/ny-posts-pictures', requireToken, (req, res, next) => {
   // find all pictures where the privacy of the owner is false
   // if the owner is getting the pictures, show them their pictures as well
-  console.log(req.user, "my user")
+  console.log(req.user, 'my user')
   Nypicture.find()
     .then(handle404)
     .then(pictures => {
