@@ -7,7 +7,7 @@ const laPictureSchema = new mongoose.Schema({
   },
   title: {
     type: String,
-    required: false
+    required: true
   },
   list: {
     type: String,
