@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const parPostSchema = new mongoose.Schema({
+  url: {
+    type: String,
+    required: false
+  },
   title: {
     type: String,
     required: true
@@ -13,6 +17,10 @@ const parPostSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
+  },
+  upvote: {
+    type: Number,
+    required: false
   }
 },
 {
