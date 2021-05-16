@@ -17,6 +17,10 @@ const nyPictureSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
+  },
+  upvote: {
+    type: Number,
+    required: false
   }
 }, {
   timestamps: true

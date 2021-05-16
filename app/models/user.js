@@ -11,6 +11,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  clout: {
+    type: Number,
+    required: false
+  },
   hashedPassword: {
     type: String,
     required: true
