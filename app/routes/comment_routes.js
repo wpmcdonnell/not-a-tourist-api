@@ -65,6 +65,7 @@ router.get('/comments/:id', requireToken, (req, res, next) => {
 router.post('/comments', requireToken, (req, res, next) => {
   // set owner of new comment to be current user
   req.body.comment.owner = req.user.id
+  console.log(req.user.id)
 
   Comment.create(req.body.comment)
     // respond to succesful `create` with status 201 and JSON of new "comment"
