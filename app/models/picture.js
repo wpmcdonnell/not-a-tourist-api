@@ -21,6 +21,10 @@ const pictureSchema = new mongoose.Schema({
   upvote: {
     type: Number,
     required: false
+  },
+  upvoteUserId: {
+    type: String,
+    required: false
   }
 }, {
   timestamps: true
