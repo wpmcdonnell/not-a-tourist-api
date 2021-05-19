@@ -23,7 +23,7 @@ const pictureSchema = new mongoose.Schema({
     required: false
   },
   upvoteUserId: {
-    type: String,
+    type: Array,
     required: false
   }
 }, {
