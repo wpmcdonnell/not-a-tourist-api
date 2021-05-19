@@ -20,7 +20,7 @@ router.post('/ny-posts-pictures', requireToken, upload.single('picture'), (req, 
   console.log('this is my req.user when text', req.user)
   s3Upload(req.file)
     .then(awsFile => {
-      return Nypicture.create({ url: awsFile.Location, owner: req.user.id, title: req.body.title, list: req.body.list })
+      return Nypicture.create({ url: awsFile.Location, owner: req.user.id, title: req.body.title, list: req.body.list, upvote: 0, upvoteUserId: [1] })
     })
   //  req.body => { upload: { url: 'www.blank.com' } }
     .then(pictureDoc => {
@@ -117,12 +117,12 @@ router.get('/ny-posts-pictures/:id', (req, res, next) => {
 })
 
 // // UPDATE picture caption
-router.patch('/ny-posts-pictures/:id', requireToken, removeBlanks, (req, res, next) => {
+router.patch('/ny-posts-pictures/:id', removeBlanks, (req, res, next) => {
   delete req.body.picture.owner
   Nypicture.findById(req.params.id)
     .then(handle404)
     .then(picture => {
-      requireOwnership(req, picture)
+      // requireOwnership(req, picture)
       return picture.updateOne(req.body.picture)
     })
     .then(() => res.sendStatus(204))

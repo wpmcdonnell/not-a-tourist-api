@@ -20,7 +20,7 @@ router.post('/dc-posts-pictures', requireToken, upload.single('picture'), (req, 
   console.log('this is my req.user when text', req.user)
   s3Upload(req.file)
     .then(awsFile => {
-      return Dcpicture.create({ url: awsFile.Location, owner: req.user.id, title: req.body.title, list: req.body.list })
+      return Dcpicture.create({ url: awsFile.Location, owner: req.user.id, title: req.body.title, list: req.body.list, upvote: 0, upvoteUserId: [1] })
     })
   //  req.body => { upload: { url: 'www.blank.com' } }
     .then(pictureDoc => {
@@ -35,7 +35,7 @@ router.post('/dc-posts-pictures', requireToken, upload.single('picture'), (req, 
 router.get('/dc-posts-pictures', requireToken, (req, res, next) => {
   // find all pictures where the privacy of the owner is false
   // if the owner is getting the pictures, show them their pictures as well
-  console.log(req.user, "my user")
+  console.log(req.user, 'my user')
   Dcpicture.find()
     .then(handle404)
     .then(pictures => {
@@ -117,12 +117,12 @@ router.get('/dc-posts-pictures/:id', (req, res, next) => {
 })
 
 // // UPDATE picture caption
-router.patch('/dc-posts-pictures/:id', requireToken, removeBlanks, (req, res, next) => {
+router.patch('/dc-posts-pictures/:id', removeBlanks, (req, res, next) => {
   delete req.body.picture.owner
   Dcpicture.findById(req.params.id)
     .then(handle404)
     .then(picture => {
-      requireOwnership(req, picture)
+      // requireOwnership(req, picture)
       return picture.updateOne(req.body.picture)
     })
     .then(() => res.sendStatus(204))

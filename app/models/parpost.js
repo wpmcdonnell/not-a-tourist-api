@@ -21,6 +21,10 @@ const parPostSchema = new mongoose.Schema({
   upvote: {
     type: Number,
     required: false
+  },
+  upvoteUserId: {
+    type: Array,
+    required: false
   }
 },
 {

@@ -117,12 +117,12 @@ router.get('/posts-pictures/:id', (req, res, next) => {
 })
 
 // // UPDATE picture caption
-router.patch('/posts-pictures/:id', requireToken, removeBlanks, (req, res, next) => {
+router.patch('/posts-pictures/:id', removeBlanks, (req, res, next) => {
   delete req.body.picture.owner
   Picture.findById(req.params.id)
     .then(handle404)
     .then(picture => {
-      requireOwnership(req, picture)
+      // requireOwnership(req, picture)
       return picture.updateOne(req.body.picture)
     })
     .then(() => res.sendStatus(204))

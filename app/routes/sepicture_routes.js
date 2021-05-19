@@ -20,7 +20,7 @@ router.post('/se-posts-pictures', requireToken, upload.single('picture'), (req, 
   console.log('this is my req.user when text', req.user)
   s3Upload(req.file)
     .then(awsFile => {
-      return SePicture.create({ url: awsFile.Location, owner: req.user.id, title: req.body.title, list: req.body.list })
+      return SePicture.create({ url: awsFile.Location, owner: req.user.id, title: req.body.title, list: req.body.list, upvote: 0, upvoteUserId: [1] })
     })
   //  req.body => { upload: { url: 'www.blank.com' } }
     .then(pictureDoc => {
@@ -35,7 +35,7 @@ router.post('/se-posts-pictures', requireToken, upload.single('picture'), (req, 
 router.get('/se-posts-pictures', requireToken, (req, res, next) => {
   // find all pictures where the privacy of the owner is false
   // if the owner is getting the pictures, show them their pictures as well
-  console.log(req.user, "my user")
+  console.log(req.user, 'my user')
   SePicture.find()
     .then(handle404)
     .then(pictures => {
@@ -117,12 +117,12 @@ router.get('/se-posts-pictures/:id', (req, res, next) => {
 })
 
 // // UPDATE picture caption
-router.patch('/se-posts-pictures/:id', requireToken, removeBlanks, (req, res, next) => {
+router.patch('/se-posts-pictures/:id', removeBlanks, (req, res, next) => {
   delete req.body.picture.owner
   SePicture.findById(req.params.id)
     .then(handle404)
     .then(picture => {
-      requireOwnership(req, picture)
+      // requireOwnership(req, picture)
       return picture.updateOne(req.body.picture)
     })
     .then(() => res.sendStatus(204))
