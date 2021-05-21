@@ -18,6 +18,10 @@ const nyPictureSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
+  type: {
+    type: String,
+    required: false
+  },
   upvote: {
     type: Number,
     required: false

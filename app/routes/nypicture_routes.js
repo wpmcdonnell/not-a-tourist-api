@@ -20,7 +20,7 @@ router.post('/ny-posts-pictures', requireToken, upload.single('picture'), (req, 
   console.log('this is my req.user when text', req.user)
   s3Upload(req.file)
     .then(awsFile => {
-      return Nypicture.create({ url: awsFile.Location, owner: req.user.id, title: req.body.title, list: req.body.list, upvote: 0, upvoteUserId: [1] })
+      return Nypicture.create({ url: awsFile.Location, owner: req.user.id, title: req.body.title, list: req.body.list, type: 'picture', upvote: 0, upvoteUserId: [1] })
     })
   //  req.body => { upload: { url: 'www.blank.com' } }
     .then(pictureDoc => {
